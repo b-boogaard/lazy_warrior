@@ -20,11 +20,21 @@ require 'psych'
 #     states of github.
 class LazyConfig
   def github
-    config[:github]
+    config['github']
   end
 
   def jira
-    config[:jira]
+    config['jira']
+  end
+
+  def usage
+    puts ['Reads a YAML structured from $HOME/.lazy_warrior.',
+          'The following is the valid structure and the currently',
+          'supported fields.',
+          'github:', "\turl: value", "\tusername: value",
+          "\tpassword: value", "\trepos:", "\t\t- repo1", "\t\t- repo2",
+          'jira:', "\turl: value", "\tusername: value", "\tpassword: value"
+         ].join("\n")
   end
 
   private
@@ -38,11 +48,11 @@ class LazyConfig
       exit(1)
     end
 
-    @config ||= Psych.load_file('~user/.lazy_warrior')
+    @config ||= Psych.load_file("#{ENV['HOME']}/.lazy_warrior")
   end
 
   # @private
   def config_exists?
-    File.file?('~user/.lazy_warrior')
+    File.file?("#{ENV['HOME']}/.lazy_warrior")
   end
 end
