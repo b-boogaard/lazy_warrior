@@ -18,14 +18,25 @@ require 'psych'
 # @todo Allow for password to be stored in a more secure location.
 #     Allow for customizable jira queries and ability to look for different
 #     states of github.
-class Config
+class LazyConfig
+  def github
+    config[:github]
+  end
+
+  def jira
+    config[:jira]
+  end
+
   private
 
   # @private
   def config
-    fail ["Must specify configuration values in ~user/.lazy_warrior.\n",
-          "Use `rake config` for more information.\n"
-         ].join('') unless config_exists?
+    unless config_exists?
+      puts ["Must specify configuration values in ~user/.lazy_warrior.\n",
+            "Use 'rake config' for more information.\n"
+           ].join('')
+      exit(1)
+    end
 
     @config ||= Psych.load_file('~user/.lazy_warrior')
   end
