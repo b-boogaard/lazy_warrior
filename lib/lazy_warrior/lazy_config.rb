@@ -19,15 +19,15 @@ require 'psych'
 #     Allow for customizable jira queries and ability to look for different
 #     states of github.
 class LazyConfig
-  def github
-    config['github']
+  def self.github
+    config[:github]
   end
 
-  def jira
-    config['jira']
+  def self.jira
+    config[:jira]
   end
 
-  def usage
+  def self.usage
     puts ['Reads a YAML structured from $HOME/.lazy_warrior.',
           'The following is the valid structure and the currently',
           'supported fields.',
@@ -40,7 +40,7 @@ class LazyConfig
   private
 
   # @private
-  def config
+  def self.config
     unless config_exists?
       puts ["Must specify configuration values in ~user/.lazy_warrior.\n",
             "Use 'rake config' for more information.\n"
@@ -52,7 +52,7 @@ class LazyConfig
   end
 
   # @private
-  def config_exists?
+  def self.config_exists?
     File.file?("#{ENV['HOME']}/.lazy_warrior")
   end
 end
