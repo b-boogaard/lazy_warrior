@@ -38,6 +38,7 @@ class Pulls < Base
 
   def populate_result(pull, result)
     result[:state] = 'open'
+    result[:id] = pull[:id]
     result[:title] = pull[:title]
     result[:owner] = pull[:user][:login]
     result[:html] = pull.rels[:html].href
