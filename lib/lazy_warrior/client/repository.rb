@@ -1,21 +1,16 @@
 require 'octokit'
-require 'json'
+require_relative 'base'
 
-class Repositry
-  def initialize(config, client)
-    @config = config
-    @client = client
+class Repository < Base
+  def initialize
+    super()
   end
 
-  def repos
-    @repos ||= populate_repo
+  def fetch_repositories(repos)
+    repos.map { |r| fetch_repository(r) }
   end
 
-  private
-
-  def populate_repo
-    config.github[:repos].each do |r|
-      @repos << client.repository(r)
-    end
+  def fetch_repository(repo)
+    Octokit.repo repo
   end
 end

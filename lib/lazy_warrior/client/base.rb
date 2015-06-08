@@ -17,8 +17,8 @@ class Base
 
   def provide_credentials
     Octokit.configure do |c|
-      c.login = LazyConfig.github.username
-      c.password = LazyConfig.github.password
+      c.login = LazyConfig.github[:username]
+      c.password = LazyConfig.github[:password]
     end
   end
 end

@@ -7,37 +7,30 @@ class Pulls < Base
     super()
   end
 
-  def get_incomplete_reviews
-    open_pulls
+  def get_incomplete_reviews(repo)
+    open_pulls(repo)
   end
 
   private
 
-  def open_pulls
-    repos = Repository.new.get_repositories(github[:repos])
-    pulls = pulls_by_repo(repos)
+  def open_pulls(repo)
+    pulls = repo.rels[:pulls].get.data
+    result = []
 
     pulls.collect do |pull|
-      if pull[:state].contains? 'open'
-        result = populate_result(pull, {})
+      if pull[:state].eql? 'open'
+        result << populate_result(pull, {})
       end
-
-      result || {}
     end
 
-    pulls.select { |x| !x.empty? }
-  end
-
-  def pulls_by_repo(repos)
-    repos.map { |repo| repo.rels[:pulls].get.data }
+    result.select { |x| !x.empty? }
   end
 
   def finished_review?(pull)
     comments = pull.rels[:comments].get.data
 
-    comments.select do |c|
-      c[:user][:login].eql? Octokit.user.login
-      and c[:body].eql? '+1'
+    comments.select! do |c|
+      (c[:user][:login].eql? Octokit.user.login) && (c[:body].eql? '+1')
     end
 
     !comments.empty?
@@ -50,7 +43,7 @@ class Pulls < Base
     result[:html] = pull.rels[:html].href
     result[:diff] = pull.rels[:diff].href
     result[:created_at] = pull[:created_at]
-    result[:finished] = finished_review?(pull, client)
+    result[:finished] = finished_review?(pull)
 
     result
   end
