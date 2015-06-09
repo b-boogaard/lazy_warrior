@@ -26,4 +26,34 @@ RSpec.describe Repository do
       end
     end
   end
+
+  describe "#fetch_repositories" do
+    context "with a valid list of repositories" do
+      it "returns data from github for each repository" do
+        repos = ['mock_repo_one', 'mock_repo_two']
+        result = [{worked: 'one'}, {worked: 'two'}]
+
+        allow(Octokit).to receive(:repo).with(repos[0]).and_return(result[0])
+        allow(Octokit).to receive(:repo).with(repos[1]).and_return(result[1])
+
+        repository = Repository.new
+
+        expect(repository.fetch_repositories(repos)).to eq(result)
+      end
+    end
+
+    context "with a mix of valid and invalid repositories" do
+      it "returns data from github for the valid repositories" do
+        repos = ['mock_repo_one', 'mock_repo_bad']
+        result = [{worked: 'one'}, {}]
+
+        allow(Octokit).to receive(:repo).with(repos[0]).and_return(result[0])
+        allow(Octokit).to receive(:repo).with(repos[1]).and_return({})
+
+        repository = Repository.new
+
+        expect(repository.fetch_repositories(repos)).to eq(result)
+      end
+    end
+  end
 end
