@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/lazy_warrior.rb'
+
+lazy_warrior = LazyWarrior::Update.new
+lazy_warrior.tasks
