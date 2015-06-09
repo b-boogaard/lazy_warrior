@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Brian van de Boogaard']
   spec.email         = ['brian.boogaard@gmail.com']
   spec.summary       = 'Add tasks to Task Warrior from external sources'
-  spec.description   = "Update Task Warrior tasks from important sites, because I'm lazy."
-  spec.homepage      = 'https://github.com/b-boogaard'
+  spec.description   = "Update Task Warrior with tasks from important sites I use, because I'm lazy."
+  spec.homepage      = 'https://github.com/b-boogaard/lazy_warrior'
   spec.license       = 'MIT'
   spec.version       = LazyWarrior::VERSION.dup
 
@@ -18,8 +18,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib', 'lib/client']
-  spec.required_ruby_version = '>= 2.0.0'
-  spec.required_rubygems_version = '>= 1.3.5'
+  # I didn't do any testing on lower versions
+  spec.required_ruby_version = '>= 2.1.5'
+  spec.required_rubygems_version = '>= 2.4.3'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 1.7'
