@@ -13,7 +13,7 @@ module LazyWarrior
     end
 
     def tasks
-      active_repos = @repository.fetch_repositories(LazyConfig.github[:repos])
+      active_repos = @repository.fetch_repositories()
       active_repos.each do |repo|
         updated_pulls = @pulls.get_incomplete_reviews(repo)
         update_tasks(updated_pulls)
